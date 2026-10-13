@@ -13,6 +13,7 @@ df = pd.DataFrame({
 gdf = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df.longitude, df.latitude), crs="EPSG:4326")
 
 # 3. Plot on base map
-ax = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres')).plot(color='white', edgecolor='black')
+world = gpd.read_file("https://naciscdn.org/naturalearth/110m/cultural/ne_110m_admin_0_countries.zip")
+ax = world.plot(color='white', edgecolor='black')
 gdf.plot(ax=ax, color='red', markersize=20)
 plt.show()
