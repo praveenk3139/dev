@@ -1,21 +1,21 @@
-import pandas as pd
 import folium
-from bokeh.plotting import figure, show
 
-# 1. Load data
-df = pd.read_csv(r'D:\ARCHANA\dxv\LAB\DXV\geographic.csv')
+m = folium.Map(location=[13.08, 80.27], zoom_start=5, tiles="Esri.WorldStreetMap")
 
-# 2. Bokeh plot with hover tooltips
-tooltips = [("Info", "@Info"), ("Latitude", "@Latitude"), ("Longitude", "@Longitude")]
-p = figure(width=800, height=400, tooltips=tooltips)
-p.circle('Longitude', 'Latitude', size=10, color='orange', source=df)
-show(p)
+cities = {
+    "Chennai": [13.08, 80.27],
+    "Bangalore": [12.97, 77.59],
+    "Mumbai": [19.07, 72.87],
+    "Delhi": [28.61, 77.20]
+}
 
-# 3. Folium map
-center = [df['Latitude'].mean(), df['Longitude'].mean()]
-m = folium.Map(location=center, zoom_start=10)
+for city, loc in cities.items():
+    folium.Marker(
+        loc,
+        tooltip=f"{city} | Lat: {loc[0]} | Lon: {loc[1]}"
+    ).add_to(m)
 
-for _, row in df.iterrows():
-    folium.Marker([row['Latitude'], row['Longitude']], popup=row['Info']).add_to(m)
+m.save("map.html")
 
-m.save('map.html')
+import webbrowser
+webbrowser.open("map.html")
